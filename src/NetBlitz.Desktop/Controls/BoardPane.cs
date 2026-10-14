@@ -27,15 +27,18 @@ public sealed class BoardPane : Border
         _title.Margin = new(4, 0, 0, 6); grid.Children.Add(_title);
         for (int index = 0; index < 2; index++)
         {
-            _names[index].FontSize = 14; _names[index].VerticalAlignment = VerticalAlignment.Center;
+            _names[index].FontSize = 13; _names[index].VerticalAlignment = VerticalAlignment.Center;
             _names[index].TextTrimming = TextTrimming.CharacterEllipsis;
-            _names[index].Foreground = Brushes.White;
+            _names[index].Foreground = NetBlitzTheme.Ink;
             _clocks[index].FontFamily = new FontFamily("Cascadia Mono,Consolas,DejaVu Sans Mono,monospace");
-            _clocks[index].FontSize = 28; _clocks[index].FontWeight = FontWeight.SemiBold;
+            _clocks[index].FontSize = 20; _clocks[index].FontWeight = FontWeight.SemiBold;
             _clocks[index].HorizontalAlignment = HorizontalAlignment.Right;
+            _clocks[index].Foreground = NetBlitzTheme.Ink;
             var strip = new Grid { ColumnDefinitions = new("*,Auto"), ColumnSpacing = 8 };
             strip.Children.Add(_names[index]); strip.Children.Add(_clocks[index]); Grid.SetColumn(_clocks[index], 1);
-            _strips[index].Child = strip; _strips[index].Padding = new(12, 6); _strips[index].CornerRadius = new(7);
+            _strips[index].Child = strip; _strips[index].Padding = new(10, 4); _strips[index].CornerRadius = new(8);
+            _strips[index].Background = NetBlitzTheme.Window;
+            _strips[index].BorderBrush = NetBlitzTheme.Frame; _strips[index].BorderThickness = new(1);
             grid.Children.Add(_strips[index]); Grid.SetRow(_strips[index], index == 0 ? 1 : 4);
             _pockets[index].Orientation = Orientation.Horizontal; _pockets[index].Spacing = 4;
             _pockets[index].HorizontalAlignment = HorizontalAlignment.Center;
@@ -91,10 +94,14 @@ public sealed class BoardPane : Border
             var side = DisplaySide(index); bool active = match.Phase == GamePhase.Playing && match.Boards[BoardIndex].Turn == side;
             double time = match.RemainingMs[Chess.Seat(BoardIndex, side)] - (active ? elapsedMs : 0);
             _clocks[index].Text = match.Settings.UnlimitedTime ? "∞" : FormatTime(time);
-            _clocks[index].Foreground = !match.Settings.UnlimitedTime && time <= 10000 ? NetBlitzTheme.ClockWarning
-                : active ? NetBlitzTheme.Yellow : Brushes.White;
-            _names[index].Foreground = active ? NetBlitzTheme.Yellow : Brushes.White;
-            _strips[index].Background = NetBlitzTheme.DeepBlue;
+            bool lowTime = !match.Settings.UnlimitedTime && time <= 10000;
+            _clocks[index].Foreground = lowTime ? NetBlitzTheme.Error : NetBlitzTheme.Ink;
+            _clocks[index].Opacity = active || lowTime ? 1 : 0.65;
+            _names[index].Foreground = active ? NetBlitzTheme.Ink : NetBlitzTheme.Muted;
+            _names[index].FontWeight = active ? FontWeight.SemiBold : FontWeight.Regular;
+            _strips[index].Background = active ? NetBlitzTheme.Surface : NetBlitzTheme.Window;
+            _strips[index].BorderBrush = active ? NetBlitzTheme.DeepBlue : NetBlitzTheme.Frame;
+            _strips[index].BorderThickness = new(active ? 1.5 : 1);
         }
     }
     public static string FormatTime(double ms)

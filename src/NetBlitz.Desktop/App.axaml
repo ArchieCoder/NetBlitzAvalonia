@@ -3,7 +3,7 @@
              x:Class="NetBlitz.Desktop.App" RequestedThemeVariant="Light">
   <Application.Styles>
     <FluentTheme>
-      <FluentTheme.Palettes><ColorPaletteResources x:Key="Light" Accent="#07078D" /></FluentTheme.Palettes>
+      <FluentTheme.Palettes><ColorPaletteResources x:Key="Light" Accent="#2C3E50" /></FluentTheme.Palettes>
     </FluentTheme>
     <Style Selector="Window">
       <Setter Property="FontFamily" Value="Inter"/>

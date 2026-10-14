@@ -10,6 +10,7 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.3.20" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.20" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.20" />
+    <ProjectReference Include="../NetBlitz.Core/NetBlitz.Core.csproj" />
     <ProjectReference Include="../NetBlitz.Network/NetBlitz.Network.csproj" />
     <AvaloniaResource Include="Assets/**" />
     <Content Include="Assets/Pieces/Cburnett/*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />

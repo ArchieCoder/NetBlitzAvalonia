@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:theme="using:NetBlitz.Desktop"
+        xmlns:core="using:NetBlitz.Core"
         xmlns:converters="using:Avalonia.Data.Converters"
         x:Class="NetBlitz.Desktop.MainWindow" Title="Net Blitz · Chess &amp; Bughouse"
         Width="1440" Height="920" MinWidth="1080" MinHeight="720"
@@ -81,7 +82,7 @@
                       <TextBlock x:Name="MovesEmpty" Text="No moves yet." Classes="muted" FontSize="12"/>
                       <ItemsControl x:Name="MovesList">
                         <ItemsControl.ItemTemplate>
-                          <DataTemplate x:DataType="theme:MoveHistoryRow">
+                          <DataTemplate x:DataType="core:MoveHistoryRow">
                             <Grid ColumnDefinitions="36,*,*" ColumnSpacing="8" Margin="0,0,0,6">
                               <TextBlock Text="{Binding Label}" Classes="muted" FontFamily="Cascadia Mono,Consolas,monospace" FontSize="12"/>
                               <TextBlock Grid.Column="1" Text="{Binding White}" FontFamily="Cascadia Mono,Consolas,monospace" FontSize="12" TextWrapping="Wrap"/>
