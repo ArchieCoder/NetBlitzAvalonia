@@ -1,0 +1,113 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:theme="using:NetBlitz.Desktop"
+        xmlns:converters="using:Avalonia.Data.Converters"
+        x:Class="NetBlitz.Desktop.MainWindow" Title="Net Blitz · Chess &amp; Bughouse"
+        Width="1440" Height="920" MinWidth="1080" MinHeight="720"
+        Icon="/Assets/NetBlitz.ico">
+  <Grid RowDefinitions="Auto,Auto,*" Margin="24" RowSpacing="18">
+    <Grid ColumnDefinitions="*,Auto">
+      <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+        <Border Background="{x:Static theme:NetBlitzTheme.DeepBlue}" CornerRadius="10" Width="46" Height="46">
+          <Path Data="M17,9 L23,9 L30,23 L25,23 L27,37 L17,22 L22,22 Z" Fill="{x:Static theme:NetBlitzTheme.Yellow}" Stroke="Black" StrokeThickness="2" StrokeJoin="Round" StrokeLineCap="Square"/>
+        </Border>
+        <StackPanel Spacing="2">
+          <TextBlock Text="NET BLITZ" FontSize="24" FontWeight="Bold" LetterSpacing="3"/>
+          <TextBlock Text="CHESS &amp; BUGHOUSE  /  SINCE 1999" FontSize="10" LetterSpacing="1.5" Classes="muted"/>
+        </StackPanel>
+      </StackPanel>
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+        <Button Content="Settings" Click="OnSettings" Classes="quiet"/>
+        <Button Content="About" Click="OnAbout" Classes="quiet"/>
+      </StackPanel>
+    </Grid>
+    <Border Grid.Row="1" Classes="panel" Padding="14,12">
+      <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" ColumnSpacing="10">
+        <ComboBox x:Name="ModePicker" SelectedIndex="0" Width="146" SelectionChanged="OnModeChanged" VerticalAlignment="Center">
+          <ComboBoxItem Content="Classic chess"/><ComboBoxItem Content="Bughouse"/>
+        </ComboBox>
+        <Button Grid.Column="1" Content="Local game" Click="OnLocal" Classes="quiet"/>
+        <Button Grid.Column="2" x:Name="HostButton" Content="Host a room" Click="OnHost" Classes="quiet"/>
+        <Button Grid.Column="3" x:Name="JoinButton" Content="Join a room" Click="OnJoin" Classes="quiet"/>
+        <Button Grid.Column="4" Content="Flip boards" Click="OnFlip" Classes="quiet"/>
+        <TextBlock Grid.Column="5" x:Name="ConnectionLabel" Text="LOCAL · PASS &amp; PLAY" Classes="muted" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0"/>
+        <Button Grid.Column="6" x:Name="StartButton" Content="Start game" Click="OnStart" Classes="primary"/>
+      </Grid>
+    </Border>
+    <Grid Grid.Row="2" ColumnDefinitions="*,300" ColumnSpacing="18">
+      <Grid x:Name="BoardsHost" ColumnDefinitions="*" ColumnSpacing="14"/>
+      <Border Grid.Column="1" Classes="panel" Padding="14">
+        <Grid RowDefinitions="*" RowSpacing="14">
+          <TabControl x:Name="SidebarTabs">
+            <TabItem Header="Game">
+              <ScrollViewer>
+                <StackPanel Spacing="14" Margin="0,12,0,0">
+                  <TextBlock x:Name="ResultLabel" Text="Ready to play" FontSize="16" TextWrapping="Wrap" Foreground="{x:Static theme:NetBlitzTheme.DeepBlue}"/>
+                  <TextBlock x:Name="StatusLabel" Classes="muted" FontSize="12" TextWrapping="Wrap"
+                             IsVisible="{ReflectionBinding Text, RelativeSource={RelativeSource Self}, Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}"/>
+                  <TextBlock x:Name="ScoreLabel" Classes="muted" TextWrapping="Wrap" FontSize="12"/>
+                  <TextBlock Text="PLAYERS" Classes="muted" FontSize="10" LetterSpacing="1.5"/>
+                  <StackPanel x:Name="PlayersPanel" Spacing="6"/>
+                  <TextBlock x:Name="LobbyHint" Classes="muted" FontSize="12" TextWrapping="Wrap"/>
+                  <Button x:Name="SwitchButton" Content="Switch player colors" Click="OnSwitchColors" HorizontalAlignment="Stretch"/>
+                  <Border Height="1" Background="{x:Static theme:NetBlitzTheme.Frame}"/>
+                  <TextBlock Text="GAME ACTIONS" Classes="muted" FontSize="10" LetterSpacing="1.5"/>
+                  <ComboBox x:Name="ActorPicker" SelectedIndex="0" HorizontalAlignment="Stretch" SelectionChanged="OnActorChanged"/>
+                  <Button x:Name="DrawButton" Content="Offer draw" Click="OnDraw" HorizontalAlignment="Stretch"/>
+                  <Button x:Name="TimeCallButton" Content="Call opponent’s time" Click="OnTimeCall" HorizontalAlignment="Stretch"/>
+                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button x:Name="ResignButton" Content="Resign" Click="OnResign" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="1" x:Name="AbortButton" Content="Abort" Click="OnAbort" HorizontalAlignment="Stretch"/>
+                  </Grid>
+                </StackPanel>
+              </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Moves">
+              <Grid RowDefinitions="Auto,*" RowSpacing="10" Margin="0,12,0,0">
+                <StackPanel Spacing="10">
+                  <Button Content="Export game record" Click="OnExport" HorizontalAlignment="Stretch"/>
+                  <ComboBox x:Name="MoveBoardPicker" SelectedIndex="0" IsVisible="False"
+                            HorizontalAlignment="Stretch" SelectionChanged="OnMoveBoardChanged"
+                            AutomationProperties.Name="Move history board">
+                    <ComboBoxItem Content="Board A"/><ComboBoxItem Content="Board B"/>
+                  </ComboBox>
+                </StackPanel>
+                <Grid Grid.Row="1" RowDefinitions="Auto,*" RowSpacing="8">
+                  <Grid ColumnDefinitions="36,*,*" ColumnSpacing="8">
+                    <TextBlock Grid.Column="1" Text="White" Classes="muted" FontSize="12"/>
+                    <TextBlock Grid.Column="2" Text="Black" Classes="muted" FontSize="12"/>
+                  </Grid>
+                  <ScrollViewer Grid.Row="1" x:Name="MovesScroll" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                      <TextBlock x:Name="MovesEmpty" Text="No moves yet." Classes="muted" FontSize="12"/>
+                      <ItemsControl x:Name="MovesList">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate x:DataType="theme:MoveHistoryRow">
+                            <Grid ColumnDefinitions="36,*,*" ColumnSpacing="8" Margin="0,0,0,6">
+                              <TextBlock Text="{Binding Label}" Classes="muted" FontFamily="Cascadia Mono,Consolas,monospace" FontSize="12"/>
+                              <TextBlock Grid.Column="1" Text="{Binding White}" FontFamily="Cascadia Mono,Consolas,monospace" FontSize="12" TextWrapping="Wrap"/>
+                              <TextBlock Grid.Column="2" Text="{Binding Black}" FontFamily="Cascadia Mono,Consolas,monospace" FontSize="12" TextWrapping="Wrap"/>
+                            </Grid>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </StackPanel>
+                  </ScrollViewer>
+                </Grid>
+              </Grid>
+            </TabItem>
+            <TabItem x:Name="ChatTab" Header="Chat">
+              <Grid RowDefinitions="*,Auto,Auto" RowSpacing="8" Margin="0,12,0,0">
+                <ScrollViewer x:Name="ChatScroll"><TextBlock x:Name="ChatText" FontSize="13" TextWrapping="Wrap"/></ScrollViewer>
+                <CheckBox Grid.Row="1" x:Name="TeamChat" Content="Team only (bughouse)"/>
+                <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                  <TextBox x:Name="ChatInput" Watermark="Message…" MaxLength="1000" KeyDown="OnChatKey"/>
+                  <Button Grid.Column="1" Content="Send" Click="OnSendChat"/>
+                </Grid>
+              </Grid>
+            </TabItem>
+          </TabControl>
+        </Grid>
+      </Border>
+    </Grid>
+  </Grid>
+</Window>

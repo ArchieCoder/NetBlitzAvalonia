@@ -1,0 +1,18 @@
+Cburnett chess pieces
+Copyright Colin M. L. Burnett
+License: GNU General Public License, version 2 or (at your option) any later version.
+
+Source: https://github.com/lichess-org/lila/tree/5f25d6d433ae95ce1f6a92baababb14f98658596/public/piece/cburnett
+Upstream license declaration: https://github.com/lichess-org/lila/blob/5f25d6d433ae95ce1f6a92baababb14f98658596/COPYING.md
+Source commit: 5f25d6d433ae95ce1f6a92baababb14f98658596
+Retrieved: 2026-08-31
+
+All twelve SVG source files are included unchanged: wK.svg, wQ.svg, wR.svg,
+wB.svg, wN.svg, wP.svg, bK.svg, bQ.svg, bR.svg, bB.svg, bN.svg, bP.svg.
+The complete corresponding artwork source accompanies the Windows build in
+this directory. LICENSE.txt contains GNU GPL version 2; UPSTREAM-NOTICE.txt
+preserves the upstream license table, including the GPLv2+ artwork exception.
+
+The app renders these SVGs as cached Avalonia vector geometry. No image
+download is performed at runtime. No affiliation with Lichess or the artist
+is implied.
